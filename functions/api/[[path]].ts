@@ -1,4 +1,4 @@
-const apiOrigin = 'https://saigonbite-api.soukakom2018.workers.dev';
+const apiOrigin = 'https://saigonbite-api.vercel.app';
 
 export const onRequest: PagesFunction = async ({ request }) => {
   const upstreamUrl = new URL(request.url);
