@@ -1,30 +1,28 @@
-# SaigonBite
+﻿# SaigonBite frontend
 
-SaigonBite is a responsive React 18 + TypeScript + Vite web app for customer ordering and restaurant operations. The app uses clean browser routes and role-specific navigation; the customer experience starts at `/`, while operations start at `/restaurant/kitchen-orders`.
+SaigonBite is a responsive React 18 + TypeScript + Vite client for the Flask JSON API. Customer, kitchen, admin, and manager routes use role-specific navigation and clean browser URLs.
 
 ## Run locally
 
-```sh
+```powershell
 npm install
 npm run dev
 npm run build
-npm run typecheck
 ```
 
-Copy `.env.example` to `.env.local` to configure the API base URL and mock mode. `VITE_USE_MOCKS=true` is the default, so the app starts with asynchronous typed demo data. The endpoint contract is documented in [API_CONTRACT.md](./API_CONTRACT.md).
+Set `.env` to `VITE_API_BASE_URL=http://localhost:5000/api` and `VITE_USE_MOCKS=false`. The client uses an HttpOnly session cookie and CSRF tokens. Start the API before signing in. Seeded development users use password `password`: `an`, `tourist`, `kitchen1`, `kitchen2`, `admin`, and `manager`.
+
+See [API_CONTRACT.md](./API_CONTRACT.md) for the service request and response contract.
 
 ## Structure
 
 ```text
 src/
   components/ui/       reusable controls and feedback components
-  layouts/             customer, kitchen and auth shells
-  mocks/               typed seed data for the mock services
+  layouts/             customer, operations, and auth shells
   pages/customer/      customer ordering and account pages
-  pages/restaurant/    kitchen, shipper, staff and admin pages
-  services/            HTTP client and domain service modules
-  state/               persistent client state for demo order workflows
-  types/               API domain types (legacy UI types remain in src/types.ts)
+  pages/restaurant/    kitchen, voucher, and report pages
+  services/            HTTP client, mappers, and API service modules
+  state/               cart, auth, and live kitchen state
+  types/               API DTOs and normalized UI types
 ```
-
-The demo kitchen order stages and pause state persist in local storage. The service modules isolate backend calls from page components so the mock data source can be switched to an API without changing screens.

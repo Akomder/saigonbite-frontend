@@ -1,52 +1,173 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
-import { ActionStack, ScreenLayout } from '../../components/layout';
-import { Button, Field, Notice, Segmented } from '../../components/ui';
-
-const discountTypes = ['Percentage', 'Fixed amount'] as const;
-type DiscountType = (typeof discountTypes)[number];
-
+import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ScreenLayout } from "../../components/layout";
+import { Button, ErrorBanner, Skeleton } from "../../components/ui";
+import { voucherService } from "../../services/voucherService";
 export default function AdminVoucherForm() {
-  const [type, setType] = useState<DiscountType>('Percentage');
-  const [saved, setSaved] = useState(false);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const { voucherId } = useParams();
+  const editing = Boolean(voucherId && voucherId !== "new");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(editing);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [code, setCode] = useState("");
+  const [description, setDescription] = useState("");
+  const [discountType, setDiscountType] = useState<"percent" | "fixed">(
+    "percent",
+  );
+  const [value, setValue] = useState("10");
+  const [validFrom, setValidFrom] = useState("");
+  const [validTo, setValidTo] = useState("");
+  const [minOrder, setMinOrder] = useState("0");
+  const [usageLimit, setUsageLimit] = useState("");
+  const [oncePerCustomer, setOnce] = useState(true);
+  useEffect(() => {
+    if (!editing) return;
+    let live = true;
+    voucherService
+      .list()
+      .then((rows) => {
+        const v = rows.find((row) => row.id === Number(voucherId));
+        if (!v) throw new Error("Voucher not found.");
+        if (!live) return;
+        setCode(v.code);
+        setDescription(v.description);
+        setDiscountType(v.discountType);
+        setValue(String(v.value));
+        setValidFrom(v.validFrom);
+        setValidTo(v.validTo);
+        setMinOrder(String(v.minOrder));
+        setUsageLimit(v.usageLimit === null ? "" : String(v.usageLimit));
+        setOnce(v.oncePerCustomer);
+      })
+      .catch((e) => {
+        if (live)
+          setError(e instanceof Error ? e.message : "Could not load voucher.");
+      })
+      .finally(() => {
+        if (live) setLoading(false);
+      });
+    return () => {
+      live = false;
+    };
+  }, [editing, voucherId]);
+  async function submit(event: FormEvent) {
     event.preventDefault();
-    setSaved(true);
-  };
-
+    setBusy(true);
+    setError("");
+    const input = {
+      code,
+      description,
+      discountType,
+      value: Number(value),
+      validFrom,
+      validTo,
+      minOrder: Number(minOrder),
+      usageLimit: usageLimit ? Number(usageLimit) : null,
+      oncePerCustomer,
+    };
+    try {
+      if (editing) {
+        const { code: _code, ...update } = input;
+        void _code;
+        await voucherService.update(Number(voucherId), update);
+      } else await voucherService.create(input);
+      navigate("/admin/vouchers");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not save voucher.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  function field(
+    label: string,
+    name: string,
+    value: string,
+    set: (value: string) => void,
+    type = "text",
+  ) {
+    return (
+      <label className="grid gap-1.5 text-sm font-medium">
+        {label}
+        <input
+          name={name}
+          type={type}
+          required={name !== "usageLimit"}
+          value={value}
+          onChange={(e) => set(e.target.value)}
+          className="min-h-12 rounded-xl border border-line px-3"
+        />
+      </label>
+    );
+  }
   return (
-    <ScreenLayout title="Edit voucher" width="default">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 rounded-card border border-line bg-white p-5 sm:p-8" noValidate>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Voucher code" name="code" defaultValue="SAIGON10" />
-          <div className="flex flex-col gap-1.5">
-            <span className="text-[13px] font-medium text-muted">Discount type</span>
-            <Segmented label="Discount type" options={discountTypes} value={type} onChange={setType} />
+    <ScreenLayout
+      title={editing ? "Edit voucher" : "Create voucher"}
+      width="default"
+    >
+      {error && <ErrorBanner>{error}</ErrorBanner>}
+      {loading ? (
+        <Skeleton className="h-64" />
+      ) : (
+        <form
+          onSubmit={submit}
+          className="grid gap-4 rounded-card border border-line bg-white p-5 sm:grid-cols-2 sm:p-8"
+        >
+          {field("Voucher code", "code", code, setCode)}
+          <label className="grid gap-1.5 text-sm font-medium">
+            Discount type
+            <select
+              value={discountType}
+              onChange={(e) =>
+                setDiscountType(e.target.value as "percent" | "fixed")
+              }
+              className="min-h-12 rounded-xl border border-line px-3"
+            >
+              <option value="percent">Percentage</option>
+              <option value="fixed">Fixed VND</option>
+            </select>
+          </label>
+          {field(
+            discountType === "percent"
+              ? "Discount percent"
+              : "Discount value (VND)",
+            "value",
+            value,
+            setValue,
+            "number",
+          )}
+          {field("Description", "description", description, setDescription)}
+          {field("Valid from", "validFrom", validFrom, setValidFrom, "date")}
+          {field("Valid to", "validTo", validTo, setValidTo, "date")}
+          {field(
+            "Minimum order (VND)",
+            "minOrder",
+            minOrder,
+            setMinOrder,
+            "number",
+          )}
+          {field(
+            "Usage limit",
+            "usageLimit",
+            usageLimit,
+            setUsageLimit,
+            "number",
+          )}
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={oncePerCustomer}
+              onChange={(e) => setOnce(e.target.checked)}
+            />
+            Once per customer
+          </label>
+          <div className="sm:col-span-2">
+            <Button type="submit" disabled={busy}>
+              {busy ? "Saving…" : editing ? "Save changes" : "Create voucher"}
+            </Button>
           </div>
-          <Field
-            label={type === 'Percentage' ? 'Discount value (% of items subtotal)' : 'Discount value (đ off items subtotal)'}
-            name="value"
-            inputMode="numeric"
-            defaultValue={type === 'Percentage' ? '10' : '30.000'}
-            key={type}
-          />
-          <Field label="Minimum order (items subtotal)" name="minimum" defaultValue="100.000đ" />
-          <Field label="Valid from" name="validFrom" defaultValue="1 Nov 2026" />
-          <Field label="Valid until" name="validUntil" defaultValue="30 Nov 2026" />
-          <Field label="Usage limit (total uses)" name="limit" inputMode="numeric" defaultValue="500" />
-        </div>
-        <Notice>The discount applies to the items subtotal, not the delivery fee. One voucher per order.</Notice>
-        {saved ? (
-          <p role="status" className="m-0 rounded-xl bg-success-wash px-3.5 py-2.5 text-sm font-medium text-success">
-            Voucher saved.
-          </p>
-        ) : null}
-        <ActionStack row>
-          <Button type="submit">Save voucher</Button>
-          <Button variant="dangerOutline">Deactivate voucher</Button>
-        </ActionStack>
-      </form>
+        </form>
+      )}
     </ScreenLayout>
   );
 }

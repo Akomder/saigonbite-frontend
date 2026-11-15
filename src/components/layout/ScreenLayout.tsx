@@ -13,29 +13,29 @@ export interface ScreenLayoutProps {
 }
 
 const widthClasses: Record<NonNullable<ScreenLayoutProps['width']>, string> = {
-  narrow: 'max-w-xl',
-  default: 'max-w-4xl',
-  wide: 'max-w-6xl'
+  narrow: 'md:max-w-xl',
+  default: 'md:max-w-4xl',
+  wide: 'md:max-w-7xl'
 };
 
 export function ScreenLayout({ title, action, hideBack = false, width = 'default', footer, children }: ScreenLayoutProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col">
-      <div className={cn('mx-auto flex w-full flex-1 flex-col gap-5 px-gutter py-6 sm:py-8 lg:gap-6 lg:px-8', widthClasses[width])}>
-        <div className="flex items-center gap-3">
+    <div className="flex min-h-[calc(100dvh-5.25rem)] flex-col md:min-h-[calc(100dvh-4rem)]">
+      <div className={cn('screen-shell flex w-full flex-1 flex-col gap-5 lg:gap-6', widthClasses[width])}>
+        <div className="flex min-h-10 items-center gap-3">
           {hideBack ? null : (
             <button
               type="button"
               onClick={() => navigate(-1)}
               aria-label="Back"
-              className="grid size-10 shrink-0 place-items-center rounded-full bg-sand text-ink transition-colors hover:bg-neutral-wash active:scale-95"
+              className="grid size-10 shrink-0 place-items-center rounded-[20px] bg-sand text-ink transition-colors hover:bg-neutral-wash active:scale-95"
             >
               <ChevronLeftIcon size={24} />
             </button>
           )}
-          <h1 className="m-0 font-display text-[22px] font-semibold leading-tight sm:text-2xl lg:text-3xl">{title}</h1>
+          <h1 className="screen-title m-0">{title}</h1>
           {action ? (
             <button
               type="button"
@@ -62,9 +62,9 @@ export interface SplitProps {
 
 export function Split({ primary, secondary, reverseOnMobile = false, sticky = false }: SplitProps) {
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-start lg:gap-8">
-      <div className={cn('flex flex-col gap-5', reverseOnMobile && 'order-2 lg:order-1')}>{primary}</div>
-      <div className={cn('flex flex-col gap-5', reverseOnMobile && 'order-1 lg:order-2', sticky && 'lg:sticky lg:top-24')}>
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-start lg:gap-6">
+      <div className={cn('flex flex-col gap-5 lg:col-span-8', reverseOnMobile && 'order-2 lg:order-1')}>{primary}</div>
+      <div className={cn('flex flex-col gap-5 lg:col-span-4', reverseOnMobile && 'order-1 lg:order-2', sticky && 'lg:sticky lg:top-24')}>
         {secondary}
       </div>
     </div>

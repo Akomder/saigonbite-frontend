@@ -19,8 +19,8 @@ export function ChipRow<T extends string>({ items, value, onChange, label }: Chi
             aria-pressed={selected}
             onClick={() => onChange(item)}
             className={cn(
-              'shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150 active:scale-95',
-              selected ? 'bg-navy text-white' : 'bg-sand text-muted hover:bg-neutral-wash'
+              'glass-interactive shrink-0 rounded-[20px] px-4 py-[9px] text-sm font-medium transition-all duration-200 ease-out active:scale-[0.98]',
+              selected ? 'bg-navy text-white' : 'glass-pill text-muted hover:bg-white/90'
             )}
           >
             {item}

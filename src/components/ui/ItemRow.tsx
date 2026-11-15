@@ -1,4 +1,4 @@
-import type { MenuItem } from '../../types';
+import type { MenuItem } from '../../types/domain';
 import { formatVnd } from '../../utils/formatVnd';
 import { cn } from '../../utils/cn';
 import { PlusIcon } from '../icons';
@@ -16,8 +16,8 @@ export function ItemRow({ item, quantity, onAdd, onRemove }: ItemRowProps) {
   return (
     <li
       className={cn(
-        'flex items-center gap-3 rounded-card border border-line p-2.5 pr-3 transition-shadow duration-150',
-        item.available ? 'bg-white hover:shadow-md' : 'bg-sand'
+        'glass-interactive flex items-center gap-3 rounded-card border border-line p-2.5 pr-3 transition-all duration-200 ease-out',
+        item.available ? 'bg-white/95 hover:shadow-md' : 'bg-sand'
       )}
     >
       <PhotoSlot className="size-16 shrink-0" />
@@ -34,7 +34,7 @@ export function ItemRow({ item, quantity, onAdd, onRemove }: ItemRowProps) {
             type="button"
             aria-label={`Add ${item.name}`}
             onClick={() => onAdd(item)}
-            className="grid size-9 place-items-center rounded-full bg-navy text-white transition-colors duration-150 hover:bg-blue active:scale-95"
+            className="grid size-9 place-items-center rounded-full bg-navy text-white transition-all duration-200 ease-out hover:bg-blue active:scale-[0.98]"
           >
             <PlusIcon size={18} />
           </button>

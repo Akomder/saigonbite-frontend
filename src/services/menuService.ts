@@ -1,5 +1,3 @@
-import { foodItems } from '../mocks/menu';
+import { hubService } from './hubService';
 import type { FoodItem } from '../types';
-import { request, mocksEnabled } from './api';
-const delay=(ms=200)=>new Promise(resolve=>setTimeout(resolve,ms));
-export const menuService={async getFeaturedItems():Promise<FoodItem[]>{if(mocksEnabled()){await delay();return foodItems;}return request('/menu/featured');}};
+export const menuService={async getFeaturedItems():Promise<FoodItem[]>{const hubs=await hubService.getHubs();if(!hubs.length)return[];const result=await hubService.getMenu(hubs[0].id);return result.items.filter(item=>item.available).map(item=>({id:item.id,name:item.name,brand:item.brand}));}};

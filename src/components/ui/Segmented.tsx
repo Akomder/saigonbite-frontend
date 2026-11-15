@@ -13,7 +13,7 @@ export function Segmented<T extends string>({ options, value, onChange, label, c
   const id = useId();
 
   return (
-    <div role="tablist" aria-label={label} className={cn('flex gap-1 rounded-field bg-sand p-1', compact ? 'min-h-11' : 'min-h-12')}>
+    <div role="tablist" aria-label={label} className={cn('glass-pill flex gap-1 p-1', compact ? 'min-h-11' : 'min-h-12')}>
       {options.map((option) => {
         const selected = option === value;
         return (

@@ -22,7 +22,7 @@ export function Modal({ open, onClose, title, description, icon, children }: Mod
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-backdrop/90 p-gutter" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/35 p-gutter backdrop-blur-[8px]" onMouseDown={onClose}>
       <div
         ref={panelRef}
         role="dialog"
@@ -30,7 +30,7 @@ export function Modal({ open, onClose, title, description, icon, children }: Mod
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         onMouseDown={(event) => event.stopPropagation()}
-        className="flex w-full max-w-sm flex-col items-center gap-4 rounded-modal bg-white px-6 pb-6 pt-8 text-center shadow-2xl"
+        className="glass-panel flex w-full max-w-sm flex-col items-center gap-4 rounded-modal px-6 pb-6 pt-8 text-center"
       >
         {icon ? (
           <span className="grid size-[72px] place-items-center rounded-full bg-navy text-white">{icon}</span>

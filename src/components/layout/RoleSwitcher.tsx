@@ -1,3 +1,0 @@
-import { Link } from 'react-router-dom';
-const roles=[['/','Customer'],['/restaurant/kitchen-orders','Kitchen staff'],['/admin/vouchers','Admin'],['/restaurant/shipper-deliveries','Driver'],['/manager/reports','Manager']];
-export function RoleSwitcher(){return <details className="relative ml-auto text-xs"><summary className="rounded-full border border-line px-3 py-2 text-muted">Demo roles</summary><div className="absolute right-0 top-full z-40 mt-2 grid min-w-40 gap-1 rounded-xl border border-line bg-white p-2 shadow-lg">{roles.map(([to,label])=><Link key={to} to={to} className="rounded-lg px-3 py-2 text-sm text-ink hover:bg-sand">{label}</Link>)}</div></details>;}

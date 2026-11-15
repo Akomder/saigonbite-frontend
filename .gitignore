@@ -1,3 +1,21 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Build output and test coverage
+dist/
+coverage/
 *.tsbuildinfo
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Cloudflare local state
+.wrangler/
+
+# OS files
+.DS_Store
+Thumbs.db
