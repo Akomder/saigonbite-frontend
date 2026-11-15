@@ -25,3 +25,6 @@ export { Stars } from './Stars';
 export { Stepper } from './Stepper';
 export { Switch } from './Switch';
 export { Timeline } from './Timeline';
+export { Skeleton } from './Skeleton';
+export { ErrorBanner } from './ErrorBanner';
+export { Drawer } from './Drawer';

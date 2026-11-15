@@ -1,51 +1,30 @@
-# SaigonBite Web
+# SaigonBite
 
-Responsive React 18 + TypeScript + Vite 6 + Tailwind CSS 4 implementation of the Saigon Bites Figma page: 16 Customer UI screens and 9 Restaurant UI screens, adapting from 375px phones to 1440px+ desktops.
+SaigonBite is a responsive React 18 + TypeScript + Vite web app for customer ordering and restaurant operations. The app uses clean browser routes and role-specific navigation; the customer experience starts at `/`, while operations start at `/restaurant/kitchen-orders`.
 
-## Run
+## Run locally
 
-```
+```sh
 npm install
 npm run dev
 npm run build
 npm run typecheck
 ```
 
-Routing uses `HashRouter`, so the build runs on any static host. Screens open at `/#/customer/home`, `/#/restaurant/kitchen-orders`, and so on.
-
-## Design tokens
-
-All Figma values are Tailwind v4 theme tokens in `src/index.css` under `@theme`, so they are available as CSS custom properties and as utilities:
-
-- Colors: `navy`, `blue`, `tint`, `cream`, `sand`, `line`, `ink`, `muted`, `danger`, `amber`, `success`, plus the wash tones (`navy-soft`, `navy-wash`, `success-wash`, `amber-wash`, `amber-ink`, `danger-wash`, `neutral-wash`, `backdrop`)
-- Fonts: `font-sans` (Roboto), `font-display` (Poppins)
-- Radii: `rounded-field` (14px), `rounded-card` (16px), `rounded-control` (16px), `rounded-modal` (24px), `rounded-frame` (35px)
-- Spacing: `gutter` (24px), `control` (56px button height), `field` (50px input height)
+Copy `.env.example` to `.env.local` to configure the API base URL and mock mode. `VITE_USE_MOCKS=true` is the default, so the app starts with asynchronous typed demo data. The endpoint contract is documented in [API_CONTRACT.md](./API_CONTRACT.md).
 
 ## Structure
 
-```
+```text
 src/
-  index.css              theme tokens and base styles
-  routes.tsx             screen groups: single source for nav and routes
-  components/icons/      SVG icon components (createIcon factory, BowlLogo, StarIcon)
-  components/ui/         Button, Field, Segmented, ChipRow, Card, Modal, Timeline, BarChart, ...
-  components/layout/     AppShell, Navbar, MobileDrawer, ScreenNav, ScreenLayout, Split
-  hooks/                 useDisclosure, useEscapeKey, useFocusTrap
-  data/                  menu, orders, admin: all copy, prices, statuses
-  screens/customer/      one file per customer screen
-  screens/restaurant/    one file per restaurant screen
-  utils/                 cn, formatVnd
+  components/ui/       reusable controls and feedback components
+  layouts/             customer, kitchen and auth shells
+  mocks/               typed seed data for the mock services
+  pages/customer/      customer ordering and account pages
+  pages/restaurant/    kitchen, shipper, staff and admin pages
+  services/            HTTP client and domain service modules
+  state/               persistent client state for demo order workflows
+  types/               API domain types (legacy UI types remain in src/types.ts)
 ```
 
-## Food photos
-
-Every photo is a `PhotoSlot`. Pass `src` to fill it, or set `photo` on an item in `src/data/menu.ts`. Put images in `public/images`.
-
-## Responsive behavior
-
-- Below `lg` the screen list lives in an accessible drawer (focus trap, Escape to close, `aria-expanded` on the menu button). From `lg` up it is a persistent sidebar.
-- `ScreenLayout` holds the page title and back button; `Split` turns a two-part screen into one column on mobile and a main column plus a sticky side column at `lg`.
-- Card lists use 1 column on mobile, 2 at `md`, and 3 to 4 at `lg` where it fits (food, hubs, vouchers, availability).
-- Chip rows scroll horizontally on mobile and wrap from `sm`.
-- Mobile-only sticky bars (Home bottom nav, hub cart bar) become a side summary on desktop.
+The demo kitchen order stages and pause state persist in local storage. The service modules isolate backend calls from page components so the mock data source can be switched to an API without changing screens.

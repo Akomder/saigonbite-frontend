@@ -1,5 +1,3 @@
-import type { ComponentType } from 'react';
-
 export type Tone = 'neutral' | 'green' | 'amber' | 'red' | 'navy';
 
 export type StepState = 'done' | 'current' | 'pending';
@@ -58,15 +56,3 @@ export interface ChartDatum {
   value: number;
 }
 
-export interface ScreenDefinition {
-  id: string;
-  title: string;
-  component: ComponentType;
-}
-
-export interface ScreenGroup {
-  id: 'customer' | 'restaurant';
-  title: string;
-  subtitle: string;
-  screens: ScreenDefinition[];
-}

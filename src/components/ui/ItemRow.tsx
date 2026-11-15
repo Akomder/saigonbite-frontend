@@ -9,9 +9,10 @@ export interface ItemRowProps {
   item: MenuItem;
   quantity: number;
   onAdd: (item: MenuItem) => void;
+  onRemove?: (item: MenuItem) => void;
 }
 
-export function ItemRow({ item, quantity, onAdd }: ItemRowProps) {
+export function ItemRow({ item, quantity, onAdd, onRemove }: ItemRowProps) {
   return (
     <li
       className={cn(
@@ -28,6 +29,7 @@ export function ItemRow({ item, quantity, onAdd }: ItemRowProps) {
       {item.available ? (
         <div className="flex items-center gap-2">
           {quantity > 0 ? <span className="text-sm font-semibold text-navy">×{quantity}</span> : null}
+          {quantity > 0 ? <button type="button" aria-label={`Remove one ${item.name}`} onClick={() => onRemove?.(item)} className="grid size-8 place-items-center rounded-full border border-line text-navy">−</button> : null}
           <button
             type="button"
             aria-label={`Add ${item.name}`}

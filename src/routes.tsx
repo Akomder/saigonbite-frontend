@@ -1,69 +1,45 @@
-import type { ScreenGroup } from './types';
-import SplashScreen from './screens/customer/SplashScreen';
-import { RegisterLocal, RegisterTourist } from './screens/customer/Register';
-import Home from './screens/customer/Home';
-import BrowseHubs from './screens/customer/BrowseHubs';
-import HubMenu from './screens/customer/HubMenu';
-import Product from './screens/customer/Product';
-import Checkout from './screens/customer/Checkout';
-import AddressOutOfRange from './screens/customer/AddressOutOfRange';
-import Payment from './screens/customer/Payment';
-import OrderPlaced from './screens/customer/OrderPlaced';
-import TrackOrder from './screens/customer/TrackOrder';
-import OrderRejected from './screens/customer/OrderRejected';
-import ReceiptRating from './screens/customer/ReceiptRating';
-import Complaint from './screens/customer/Complaint';
-import Profile from './screens/customer/Profile';
-import KitchenOrders from './screens/restaurant/KitchenOrders';
-import KitchenReject from './screens/restaurant/KitchenReject';
-import KitchenPrepare from './screens/restaurant/KitchenPrepare';
-import KitchenAvailability from './screens/restaurant/KitchenAvailability';
-import ShipperDeliver from './screens/restaurant/ShipperDeliver';
-import StaffComplaint from './screens/restaurant/StaffComplaint';
-import AdminVouchers from './screens/restaurant/AdminVouchers';
-import AdminVoucherForm from './screens/restaurant/AdminVoucherForm';
-import ManagerReports from './screens/restaurant/ManagerReports';
+import type { ComponentType } from 'react';
+import Home from './pages/customer/Home';
+import BrowseHubs from './pages/customer/BrowseHubs';
+import HubMenu from './pages/customer/HubMenu';
+import Product from './pages/customer/Product';
+import Checkout from './pages/customer/Checkout';
+import AddressOutOfRange from './pages/customer/AddressOutOfRange';
+import Payment from './pages/customer/Payment';
+import OrderPlaced from './pages/customer/OrderPlaced';
+import TrackOrder from './pages/customer/TrackOrder';
+import OrderRejected from './pages/customer/OrderRejected';
+import ReceiptRating from './pages/customer/ReceiptRating';
+import Complaint from './pages/customer/Complaint';
+import Profile from './pages/customer/Profile';
+import KitchenOrders from './pages/restaurant/KitchenOrders';
+import KitchenReject from './pages/restaurant/KitchenReject';
+import KitchenPrepare from './pages/restaurant/KitchenPrepare';
+import KitchenAvailability from './pages/restaurant/KitchenAvailability';
+import ShipperDeliver from './pages/restaurant/ShipperDeliver';
+import StaffComplaint from './pages/restaurant/StaffComplaint';
+import AdminVouchers from './pages/restaurant/AdminVouchers';
+import AdminVoucherForm from './pages/restaurant/AdminVoucherForm';
+import ManagerReports from './pages/restaurant/ManagerReports';
 
-export const screenGroups: ScreenGroup[] = [
-  {
-    id: 'customer',
-    title: 'Customer UI',
-    subtitle: 'Local customers and tourists ordering food',
-    screens: [
-      { id: 'splash', title: 'Splash screen', component: SplashScreen },
-      { id: 'register-local', title: 'UC1 Register · Local customer', component: RegisterLocal },
-      { id: 'register-tourist', title: 'UC1 Register · Foreign tourist', component: RegisterTourist },
-      { id: 'home', title: 'Home', component: Home },
-      { id: 'browse-hubs', title: 'UC1 Browse hubs and brands', component: BrowseHubs },
-      { id: 'hub-menu', title: 'UC1 Hub menu and availability', component: HubMenu },
-      { id: 'product', title: 'Product', component: Product },
-      { id: 'checkout', title: 'UC1 Checkout and payment', component: Checkout },
-      { id: 'address-out-of-range', title: 'UC1 Address outside delivery distance', component: AddressOutOfRange },
-      { id: 'payment', title: 'Payment', component: Payment },
-      { id: 'order-placed', title: 'Pop up message', component: OrderPlaced },
-      { id: 'track-order', title: 'UC1 Track and cancel order', component: TrackOrder },
-      { id: 'order-rejected', title: 'UC1 Order rejected and refunded', component: OrderRejected },
-      { id: 'receipt-rating', title: 'UC1 Receipt and rating', component: ReceiptRating },
-      { id: 'complaint', title: 'UC1 Complaint', component: Complaint },
-      { id: 'profile', title: 'User profile', component: Profile }
-    ]
-  },
-  {
-    id: 'restaurant',
-    title: 'Restaurant UI',
-    subtitle: 'Kitchen, shipper, office staff, admin and manager',
-    screens: [
-      { id: 'kitchen-orders', title: 'UC2 Kitchen · Confirm or reject orders', component: KitchenOrders },
-      { id: 'kitchen-reject', title: 'UC2 Kitchen · Reject order with reason', component: KitchenReject },
-      { id: 'kitchen-prepare', title: 'UC2 Kitchen · Prepare and mark ready', component: KitchenPrepare },
-      { id: 'kitchen-availability', title: 'UC2 Kitchen · Menu item availability', component: KitchenAvailability },
-      { id: 'shipper-deliver', title: 'UC2 Shipper · Deliver order', component: ShipperDeliver },
-      { id: 'staff-complaint', title: 'Office staff · Handle complaint and refund', component: StaffComplaint },
-      { id: 'admin-vouchers', title: 'UC3 Admin · Manage vouchers', component: AdminVouchers },
-      { id: 'admin-voucher-form', title: 'UC3 Admin · Create or edit voucher', component: AdminVoucherForm },
-      { id: 'manager-reports', title: 'UC4 Manager · Reports', component: ManagerReports }
-    ]
-  }
+export interface AppRoute { path: string; component: ComponentType; role: 'customer' | 'restaurant' | 'admin' | 'manager'; }
+export const customerRoutes: AppRoute[] = [
+  { path: '/', component: Home, role: 'customer' }, { path: '/hubs', component: BrowseHubs, role: 'customer' },
+  { path: '/hubs/:hubId', component: HubMenu, role: 'customer' }, { path: '/products/:productId', component: Product, role: 'customer' },
+  { path: '/checkout', component: Checkout, role: 'customer' }, { path: '/checkout/address', component: AddressOutOfRange, role: 'customer' },
+  { path: '/checkout/payment', component: Payment, role: 'customer' }, { path: '/orders/placed', component: OrderPlaced, role: 'customer' },
+  { path: '/orders', component: TrackOrder, role: 'customer' }, { path: '/orders/rejected', component: OrderRejected, role: 'customer' },
+  { path: '/orders/receipt', component: ReceiptRating, role: 'customer' }, { path: '/orders/complaint', component: Complaint, role: 'customer' },
+  { path: '/profile', component: Profile, role: 'customer' }
 ];
-
-export const defaultPath = `/${screenGroups[0].id}/${screenGroups[0].screens[0].id}`;
+export const restaurantRoutes: AppRoute[] = [
+  { path: '/restaurant/kitchen-orders', component: KitchenOrders, role: 'restaurant' },
+  { path: '/restaurant/kitchen-reject', component: KitchenReject, role: 'restaurant' },
+  { path: '/restaurant/kitchen-prepare', component: KitchenPrepare, role: 'restaurant' },
+  { path: '/restaurant/menu', component: KitchenAvailability, role: 'restaurant' },
+  { path: '/restaurant/shipper-deliveries', component: ShipperDeliver, role: 'restaurant' },
+  { path: '/restaurant/complaints', component: StaffComplaint, role: 'restaurant' },
+  { path: '/admin/vouchers', component: AdminVouchers, role: 'admin' },
+  { path: '/admin/vouchers/edit', component: AdminVoucherForm, role: 'admin' },
+  { path: '/manager/reports', component: ManagerReports, role: 'manager' }
+];

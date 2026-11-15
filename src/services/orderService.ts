@@ -1,0 +1,5 @@
+import { kitchenOrders } from '../mocks';
+import { request, mocksEnabled } from './api';
+import type { Order, OrderStatus, PaymentMethod } from '../types/domain';
+const delay=(ms=240)=>new Promise(resolve=>setTimeout(resolve,ms));
+export const orderService = { async getOrders():Promise<Order[]>{if(mocksEnabled()){await delay();return kitchenOrders;}return request('/orders');}, async updateStatus(orderId:string,status:OrderStatus):Promise<Order>{if(mocksEnabled()){await delay();const order=kitchenOrders.find(item=>item.id===orderId);if(!order)throw new Error('Order not found');return {...order,stage:status};}return request(`/orders/${encodeURIComponent(orderId)}/status`,{method:'PATCH',body:JSON.stringify({status})});}, async createOrder(payload:{hubId:string;items:{menuItemId:string;quantity:number}[];address:string;paymentMethod:PaymentMethod}):Promise<Order>{if(mocksEnabled()){await delay(400);return {id:'#SB-DEMO',items:`${payload.items.length} items`,meta:'Placed just now',stage:'New'};}return request('/orders',{method:'POST',body:JSON.stringify(payload)});} };

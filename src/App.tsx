@@ -1,19 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AppShell } from './components/layout';
-import { defaultPath, screenGroups } from './routes';
+import { CustomerLayout } from './layouts/CustomerLayout';
+import { RestaurantLayout } from './layouts/RestaurantLayout';
+import { AuthLayout } from './layouts/AuthLayout';
+import { customerRoutes, restaurantRoutes } from './routes';
+import { AppProvider } from './state/AppState';
 
 export default function App() {
-  return (
-    <Routes>
-      <Route element={<AppShell />}>
-        {screenGroups.flatMap((group) =>
-          group.screens.map((screen) => {
-            const Screen = screen.component;
-            return <Route key={`${group.id}/${screen.id}`} path={`/${group.id}/${screen.id}`} element={<Screen />} />;
-          })
-        )}
-        <Route path="*" element={<Navigate to={defaultPath} replace />} />
-      </Route>
-    </Routes>
-  );
+  return <AppProvider><Routes>
+    <Route element={<AuthLayout />}><Route path="/login" element={<Navigate to="/" replace />} /><Route path="/register" element={<Navigate to="/" replace />} /></Route>
+    <Route element={<CustomerLayout />}>{customerRoutes.map(({ path, component: Page }) => <Route key={path} path={path} element={<Page />} />)}</Route>
+    <Route element={<RestaurantLayout />}>{restaurantRoutes.map(({ path, component: Page }) => <Route key={path} path={path} element={<Page />} />)}</Route>
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes></AppProvider>;
 }
