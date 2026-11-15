@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #185079;
+  --color-blue: #3885ab;
+  --color-tint: #bbd6e1;
+  --color-cream: #fbf6f1;
+  --color-sand: #f3f0ed;
+  --color-line: #d8d0ca;
+  --color-ink: #1f1a17;
+  --color-muted: #5e4f47;
+  --color-danger: #c8321f;
+  --color-amber: #f2a900;
+  --color-success: #2f7d4e;
+  --color-placeholder: #9a8f88;
+  --color-navy-soft: #eaf2f7;
+  --color-navy-wash: #dce9f1;
+  --color-success-wash: #ddf0e4;
+  --color-amber-wash: #fff3d1;
+  --color-amber-ink: #7a5600;
+  --color-danger-wash: #f8ddd9;
+  --color-neutral-wash: #e7e2de;
+  --color-backdrop: #8d8884;
+
+  --font-sans: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-field: 0.875rem;
+  --radius-card: 1rem;
+  --radius-control: 1rem;
+  --radius-modal: 1.5rem;
+  --radius-frame: 2.1875rem;
+
+  --spacing-gutter: 1.5rem;
+  --spacing-frame-top: 3.5rem;
+  --spacing-frame-bottom: 1.75rem;
+  --spacing-control: 3.5rem;
+  --spacing-field: 3.125rem;
+
+  --shadow-frame: 0 20px 50px rgb(0 0 0 / 0.18);
+  --shadow-drawer: 0 0 40px rgb(0 0 0 / 0.3);
+
+  --breakpoint-xs: 23.4375rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button:not(:disabled),
+  summary,
+  [role='tab'],
+  [role='radio'],
+  [role='switch'] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .range-track {
+    appearance: none;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--color-navy) var(--fill), var(--color-sand) var(--fill));
+  }
+
+  .range-track::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.375rem;
+    height: 1.375rem;
+    border: 3px solid var(--color-cream);
+    border-radius: 9999px;
+    background: var(--color-navy);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+  }
+
+  .range-track::-moz-range-thumb {
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 3px solid var(--color-cream);
+    border-radius: 9999px;
+    background: var(--color-navy);
+  }
+
+  .map-grid {
+    background-image:
+      linear-gradient(var(--color-navy-wash) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-navy-wash) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
