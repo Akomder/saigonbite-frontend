@@ -55,11 +55,6 @@ export default function Login() {
         >
           {staffMode ? "Partner sign in" : "Sign in to SaigonBite"}
         </h1>
-        <p className="mb-0 mt-2 text-sm leading-6 text-muted">
-          {staffMode
-            ? "Use your restaurant or staff account to manage the kitchen."
-            : "Your favorite Saigon kitchens are just around the corner."}
-        </p>
       </div>
 
       {error && (

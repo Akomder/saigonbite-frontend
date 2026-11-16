@@ -6,7 +6,7 @@ The frontend calls the Flask API at `VITE_API_BASE_URL` (default `http://localho
 
 All IDs are database integers. Amounts are integer VND. API JSON uses snake_case and the mapper layer converts it to the UI camelCase types.
 
-- `User`: `id, username, full_name, role, customer_type, phone, email, hub_id`. Roles are `customer | kitchen | admin | manager`; customer types are `local | tourist`.
+- `User`: `id, username, full_name, role, customer_type, phone, email, hub_id`. Roles are `customer | kitchen | driver | admin | manager`; customer types are `local | tourist`.
 - `Hub`: `id, name, address, capacity, rain_mode, active_orders, load_ratio, status, accepting_orders`.
 - `MenuItem`: `id, name, name_vi, brand_id, brand, price_vnd, available`.
 - `Order`: `id, number, customer_id, hub_id, hub_name, status, delivery_address, distance_km, items_subtotal_vnd, delivery_fee_vnd, rain_surcharge_vnd, quiet_discount_vnd, voucher_discount_vnd, total_vnd, payment_method, payment_status, reject_reason, created_at, items`.
@@ -35,10 +35,16 @@ All IDs are database integers. Amounts are integer VND. API JSON uses snake_case
 | PATCH | `/kitchen/hub/pause` | `{paused:boolean}` | `{hub}` |
 | GET | `/kitchen/menu` | — | `{menu: MenuItem[]}` |
 | PATCH | `/kitchen/menu/{menu_item_id}/availability` | `{available:boolean}` | `{id,available}` |
+| GET | `/driver/orders/available` | — | `{orders: Order[]}`; Ready unclaimed orders assigned to the driver's hub |
+| GET | `/driver/orders/active` | — | `{orders: Order[]}`; own claimed Ready or Out for delivery orders |
+| GET | `/driver/orders/history` | — | `{orders: Order[]}`; own Delivered or Failed orders |
+| POST | `/driver/orders/{order_id}/accept` | — | `{order}`; atomic claim of a Ready order |
+| POST | `/driver/orders/{order_id}/pickup` | — | `{order}`; Ready → Out for delivery |
+| POST | `/driver/orders/{order_id}/complete` | — | `{order}`; Out for delivery → Delivered |
 | GET | `/admin/vouchers` | optional `q`, `state` | `{vouchers: Voucher[]}` |
 | POST | `/admin/vouchers` | snake_case voucher input | `{voucher}` |
 | PATCH | `/admin/vouchers/{voucher_id}` | snake_case editable fields | `{voucher}` |
 | POST | `/admin/vouchers/{voucher_id}/deactivate` | — | `{voucher}` |
 | GET | `/manager/reports/{kind}` | `date_from,date_to,hub_id?` query | `{report:{title,summary,tables}}` |
 
-The frontend uses the existing delivery distance rule and validates order previews on the server. This backend has no delivery address book, payment processor/transaction, driver, review, or complaint tables; the removed prototype screens for those features are not live API flows. Hub pause state is persisted separately in additive `hub_controls`; menu availability uses the existing `hub_menu_items.available` column.
+The frontend uses the existing delivery distance rule and validates order previews on the server. Driver ownership is stored in the nullable `orders.driver_id` foreign key; the migration adds that column and an index without changing existing order data. Kitchen mutations are limited to kitchen prep states, while delivery mutations require the driver role and the order's driver assignment. Hub pause state is persisted separately in additive `hub_controls`; menu availability uses the existing `hub_menu_items.available` column.

@@ -75,7 +75,6 @@ export default function RegisterPage() {
       <div className="mb-5">
         <p className="mb-2 text-xs font-bold uppercase tracking-[.16em] text-blue">Join the neighborhood</p>
         <h1 id="register-title" className="m-0 font-display text-[27px] font-semibold leading-tight tracking-[-.025em] text-ink sm:text-3xl">Create your account</h1>
-        <p className="mb-0 mt-2 text-sm leading-6 text-muted">Set up your SaigonBite account in just a moment.</p>
       </div>
 
       <div className="glass-pill mb-5 grid grid-cols-2 gap-1 p-1" role="group" aria-label="Choose account type">
