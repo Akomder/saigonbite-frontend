@@ -1,6 +1,7 @@
 import {createContext,useCallback,useContext,useEffect,useMemo,useState,type ReactNode} from 'react';
 import type {CustomerType,User,UserRole} from '../types/domain';
 import {authService} from '../services/authService';
+export {roleHomePath} from '../utils/roleRoutes';
 interface AuthValue{user:User|null;loading:boolean;login:(username:string,password:string)=>Promise<User>;register:(payload:{username:string;password:string;fullName:string;customerType:CustomerType;phone?:string;email?:string})=>Promise<User>;logout:()=>Promise<void>;}
 const Context=createContext<AuthValue|null>(null);
 export function AuthProvider({children}:{children:ReactNode}){const[user,setUser]=useState<User|null>(null);const[loading,setLoading]=useState(true);useEffect(()=>{let live=true;authService.me().then(value=>{if(live)setUser(value);}).catch(()=>{if(live)setUser(null);}).finally(()=>{if(live)setLoading(false);});return()=>{live=false;};},[]);const login=useCallback(async(username:string,password:string)=>{const value=await authService.login(username,password);setUser(value);return value;},[]);const register=useCallback(async(payload:Parameters<AuthValue['register']>[0])=>{const value=await authService.register(payload);setUser(value);return value;},[]);const logout=useCallback(async()=>{try{await authService.logout();}finally{setUser(null);}},[]);const value=useMemo(()=>({user,loading,login,register,logout}),[user,loading,login,register,logout]);return <Context.Provider value={value}>{children}</Context.Provider>;}

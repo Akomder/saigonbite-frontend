@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'kitchen' | 'admin' | 'manager';
+export type UserRole = 'customer' | 'kitchen' | 'driver' | 'admin' | 'manager';
 export type CustomerType = 'local' | 'tourist';
 export type PaymentMethod = 'cash' | 'ewallet' | 'bank_qr' | 'card';
 export type ApiOrderStatus = 'Placed' | 'Confirmed' | 'Rejected' | 'Cancelled' | 'Preparing' | 'Ready' | 'Out for delivery' | 'Delivered' | 'Failed';

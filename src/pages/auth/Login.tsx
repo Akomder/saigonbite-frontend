@@ -2,7 +2,7 @@
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { EyeIcon, EyeOffIcon, LockIcon, UserCircleIcon } from '../../components/icons';
 import { ErrorBanner } from '../../components/ui';
-import { useAuth } from '../../state/AuthState';
+import { roleHomePath, useAuth } from '../../state/AuthState';
 
 type LoginErrors = { username?: string; password?: string };
 
@@ -35,17 +35,7 @@ export default function Login() {
     try {
       const user = await login(username.trim(), password);
       const next = (location.state as { from?: string } | null)?.from;
-      navigate(
-        next ||
-          (user.role === 'customer'
-            ? '/'
-            : user.role === 'admin'
-              ? '/admin/vouchers'
-              : user.role === 'manager'
-                ? '/manager/reports'
-                : '/restaurant/kitchen-orders'),
-        { replace: true },
-      );
+      navigate(next || roleHomePath(user.role), { replace: true });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Unable to sign in.');
     } finally {
