@@ -199,10 +199,9 @@
   .auth-mesh {
     opacity: .48;
     background-image:
-      radial-gradient(circle at 74% 32%, rgb(255 226 177 / .22) 0 1px, transparent 2px),
       radial-gradient(ellipse at 18% 12%, rgb(255 255 255 / .12), transparent 34rem),
       linear-gradient(125deg, transparent 30%, rgb(255 255 255 / .035) 52%, transparent 72%);
-    background-size: 34px 34px, auto, 220% 220%;
+    background-size: auto, 220% 220%;
     animation: auth-mesh-flow 18s ease-in-out infinite alternate;
   }
 
