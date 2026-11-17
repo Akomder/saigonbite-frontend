@@ -46,10 +46,7 @@ export default function Login() {
   return (
     <section aria-labelledby="login-title">
       <div className="mb-6">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[.16em] text-blue">
-          {staffMode ? "Restaurant & kitchen partners" : "Welcome back"}
-        </p>
-        <h1
+          <h1
           id="login-title"
           className="m-0 font-display text-[27px] font-semibold leading-tight tracking-[-.025em] text-ink sm:text-3xl"
         >

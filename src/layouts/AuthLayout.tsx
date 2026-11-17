@@ -134,25 +134,6 @@ export function AuthLayout() {
         <div className="auth-dish-glow absolute inset-[12%] rounded-full" />
         <DishIllustration />
       </div>
-      <div className="glass-pill auth-float-one absolute left-8 top-[23%] z-10 hidden items-center gap-3 px-4 py-3 text-white xl:flex">
-        <span className="grid size-9 place-items-center rounded-full bg-white/15 text-lg">
-          ⌁
-        </span>
-        <span>
-          <strong className="block text-sm">Close to the good stuff</strong>
-          <small className="text-white/85">Neighborhood kitchens</small>
-        </span>
-      </div>
-      <div className="glass-pill auth-float-two absolute bottom-[18%] right-8 z-10 hidden items-center gap-3 px-4 py-3 text-white xl:flex">
-        <span className="grid size-9 place-items-center rounded-full bg-amber/20 text-lg text-amber-100">
-          ✦
-        </span>
-        <span>
-          <strong className="block text-sm">Made fresh for you</strong>
-          <small className="text-white/85">Saigon flavors, every day</small>
-        </span>
-      </div>
-
       <main className="auth-glass-card relative z-10 my-auto w-full max-w-[440px] p-5 sm:p-7">
         <div className="mb-5 text-center lg:hidden">
           <p className="m-0 font-display text-xl font-semibold text-ink">

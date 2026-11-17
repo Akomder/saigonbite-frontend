@@ -73,7 +73,6 @@ export default function RegisterPage() {
   return (
     <section aria-labelledby="register-title">
       <div className="mb-5">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[.16em] text-blue">Join the neighborhood</p>
         <h1 id="register-title" className="m-0 font-display text-[27px] font-semibold leading-tight tracking-[-.025em] text-ink sm:text-3xl">Create your account</h1>
       </div>
 
